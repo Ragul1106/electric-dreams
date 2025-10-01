@@ -25,9 +25,8 @@ SECRET_KEY = 'django-insecure-rj%eyvbke(c4v_eu*in^e@x842n#*&#!*s&vbq9ki0pncluese
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
-
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://electric-dreams-sable.vercel.app', 'electric-dreams-sable.vercel.app', '127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
@@ -143,10 +142,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
     "https://electric-dreams-sable.vercel.app",
+    "http://localhost:5173",
 ]
-CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
