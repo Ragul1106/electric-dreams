@@ -1,0 +1,59 @@
+[
+  {
+    "model": "core.homereviewssection",
+    "pk": 1,
+    "fields": {
+      "heading": "What Our Happy Customers Are Saying",
+      "subheading": "Discover why our clients trust us to keep their homes and businesses spotless.",
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.review",
+    "pk": 1,
+    "fields": {
+      "section": 1,
+      "stars": 5,
+      "text": "Had my private power pole replaced, they did an exceptional job. Competitive pricing, was well below the other quotes I got for the job. Great service!",
+      "person_image": "home/reviews/stephen.jpg",
+      "person_name": "Stephen Watts",
+      "service": "Private Power Pole Installation"
+    }
+  },
+  {
+    "model": "core.review",
+    "pk": 2,
+    "fields": {
+      "section": 1,
+      "stars": 5,
+      "text": "Connor was very diligent in troubleshooting our outdoor low voltage lighting. No problem now, all resolved by Connor, he's a good troubleshooter.",
+      "person_image": "home/reviews/dean_mckenzie.jpg",
+      "person_name": "Dean McKenzie",
+      "service": "Outdoor Lighting"
+    }
+  },
+  {
+    "model": "core.review",
+    "pk": 3,
+    "fields": {
+      "section": 1,
+      "stars": 5,
+      "text": "Connor and the team done an exceptional job at our property on a number of electrical tasks including the installation of downlights and ceiling fans.",
+      "person_image": "home/reviews/daniel.jpg",
+      "person_name": "Daniel Pollifrone",
+      "service": "Lighting & Ceiling Fans"
+    }
+  },
+  {
+    "model": "core.review",
+    "pk": 4,
+    "fields": {
+      "section": 1,
+      "stars": 5,
+      "text": "Had my power short out, called after hours, they came out within the hour and had my power back up in no time! Reasonable pricing and knowledgeable tradesman. Great job mate.",
+      "person_image": "home/reviews/dean_orchard.jpg",
+      "person_name": "Dean Orchard",
+      "service": "Emergency Call-Out"
+    }
+  }
+]

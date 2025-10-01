@@ -1,0 +1,23 @@
+[
+  {
+    "model": "core.homestepssection",
+    "pk": 1,
+    "fields": {
+      "heading": "Our Proven Three Step Process",
+
+      "step1_number": "1",
+      "step1_title": "Consultation & Assessment",
+      "step1_description": "We begin by understanding your specific needs and goals. Our experts conduct a thorough assessment to recommend the best electrical solutions tailored to your requirements.",
+
+      "step2_number": "2",
+      "step2_title": "Detailed Quote",
+      "step2_description": "After assessing your needs, we provide a clear, detailed proposal outlining the recommended approach, estimated timelines, and costs, so you know exactly what to expect.",
+
+      "step3_number": "3",
+      "step3_title": "Installation & Support",
+      "step3_description": "Our certified team completes your project with precision and efficiency, keeping you informed every step of the way. After installation, we provide guidance and ongoing support.",
+
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  }
+]

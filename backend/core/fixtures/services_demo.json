@@ -1,0 +1,90 @@
+[
+  {
+    "model": "core.service",
+    "pk": 1,
+    "fields": {
+      "title": "Air Conditioning",
+      "subtitle": "Stay Cool & Comfortable. Professional installation and servicing.",
+      "image": "home/services/aircon.jpg",
+      "order": 1,
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.service",
+    "pk": 2,
+    "fields": {
+      "title": "Energy-Efficient Lighting",
+      "subtitle": "Energy-efficient lighting solutions for your home or business.",
+      "image": "home/services/lighting.jpg",
+      "order": 2,
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.service",
+    "pk": 3,
+    "fields": {
+      "title": "Fast & Reliable Electrical Help",
+      "subtitle": "24/7 emergency electrical repairs to restore power and fix urgent issues.",
+      "image": "home/services/electrician.jpg",
+      "order": 3,
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.service",
+    "pk": 4,
+    "fields": {
+      "title": "Switchboard",
+      "subtitle": "Troubleshooting electrical faults, replacing damaged components.",
+      "image": "home/services/switchboard.jpg",
+      "order": 4,
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.service",
+    "pk": 5,
+    "fields": {
+      "title": "Electrical testing & tagging",
+      "subtitle": "Safe for use by inspecting, testing, and labeling it with the results.",
+      "image": "home/services/testing.jpg",
+      "order": 5,
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.service",
+    "pk": 6,
+    "fields": {
+      "title": "Electrical maintenance",
+      "subtitle": "Inspecting, testing, and repairing electrical systems and equipment.",
+      "image": "home/services/maintenance.jpg",
+      "order": 6,
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.service",
+    "pk": 7,
+    "fields": {
+      "title": "Electrical inspection",
+      "subtitle": "Assessing the entire electrical system to ensure it meets safety standards.",
+      "image": "home/services/inspection.jpg",
+      "order": 7,
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.service",
+    "pk": 8,
+    "fields": {
+      "title": "Emergency & outdoor security lighting",
+      "subtitle": "Install and maintain reliable lighting for emergencies and outdoor safety.",
+      "image": "home/services/security.jpg",
+      "order": 8,
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  }
+]
