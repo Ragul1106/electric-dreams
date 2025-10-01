@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState(""); // bottom right password
   const [otpOpen, setOtpOpen] = useState(false);
   const [otpIdentifier, setOtpIdentifier] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // 📌 Validators
@@ -22,13 +23,17 @@ export default function LoginPage() {
     /^[0-9]{10}$/.test(val.trim());
 
   const sendOtp = async (targetIdentifier) => {
+    setLoading(true);
     try {
       await api.post(`/api/send-otp/`, { identifier: targetIdentifier });
       setOtpIdentifier(targetIdentifier);
       setOtpOpen(true);
       toast.success("OTP sent successfully!");
     } catch (err) {
+      console.error("Send OTP error:", err);
       toast.error(err?.response?.data?.detail || "Failed to send OTP");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,10 +57,8 @@ export default function LoginPage() {
 
   const onOtpVerified = (access, username) => {
     localStorage.setItem("access", access);
-
     toast.success(`Logged in as ${username}`);
     setOtpOpen(false);
-
     setTimeout(() => {
       navigate("/");
     }, 1200);
@@ -68,13 +71,17 @@ export default function LoginPage() {
     if (password.length < 6)
       return toast.error("Password must be at least 6 characters");
 
+    setLoading(true);
     try {
-      await api.post("/api/register/", { email, password });
+      const response = await api.post("/api/register/", { email, password });
       setOtpIdentifier(email);
       setOtpOpen(true);
       toast.success("Registration successful! OTP sent to your email.");
     } catch (err) {
+      console.error("Registration error:", err);
       toast.error(err?.response?.data?.detail || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,6 +106,7 @@ export default function LoginPage() {
               className="border border-gray-300 rounded-md px-3 py-2 w-full mb-1 text-sm sm:text-base"
               value={loginIdentifier}
               onChange={(e) => setLoginIdentifier(e.target.value)}
+              disabled={loading}
             />
             <p className="text-xs text-red-600">
               Enter your number or email, we will send a verification code
@@ -109,9 +117,10 @@ export default function LoginPage() {
         <div className="sm:ml-6 mt-3 sm:mt-0 w-full sm:w-auto text-center">
           <button
             onClick={onLoginClick}
-            className="bg-[#e85a2a] w-full sm:w-auto text-white px-6 py-2 rounded-full text-sm sm:text-base"
+            disabled={loading}
+            className="bg-[#e85a2a] w-full sm:w-auto text-white px-6 py-2 rounded-full text-sm sm:text-base disabled:opacity-50"
           >
-            Log in
+            {loading ? "Sending..." : "Log in"}
           </button>
         </div>
       </div>
@@ -134,12 +143,14 @@ export default function LoginPage() {
               className="border border-gray-300 rounded-md px-3 py-2 w-full mb-3 text-sm sm:text-base"
               value={verifyIdentifier}
               onChange={(e) => setVerifyIdentifier(e.target.value)}
+              disabled={loading}
             />
             <button
               onClick={onVerifyClick}
-              className="bg-[#e85a2a] w-full sm:w-auto text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg transition text-sm sm:text-base"
+              disabled={loading}
+              className="bg-[#e85a2a] w-full sm:w-auto text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg transition text-sm sm:text-base disabled:opacity-50"
             >
-              Verify
+              {loading ? "Sending..." : "Verify"}
             </button>
           </div>
 
@@ -157,6 +168,7 @@ export default function LoginPage() {
               className="border border-gray-300 rounded-md px-3 py-2 w-full mb-3 text-sm sm:text-base"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
             />
             <label className="text-xs sm:text-sm text-gray-600 mb-1 block">
               Password
@@ -167,12 +179,14 @@ export default function LoginPage() {
               className="border border-gray-300 rounded-md px-3 py-2 w-full mb-3 text-sm sm:text-base"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
             />
             <button
               onClick={onEmailSignIn}
-              className="bg-[#e85a2a] w-full sm:w-auto text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg transition text-sm sm:text-base"
+              disabled={loading}
+              className="bg-[#e85a2a] w-full sm:w-auto text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg transition text-sm sm:text-base disabled:opacity-50"
             >
-              Sign in
+              {loading ? "Signing in..." : "Sign in"}
             </button>
           </div>
         </div>
