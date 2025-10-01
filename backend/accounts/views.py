@@ -5,13 +5,26 @@ from rest_framework.response import Response
 from rest_framework import status
 from datetime import timedelta
 from django.contrib.auth import authenticate
-from .serializers import SendOTPSerializer, VerifyOTPSerializer
-from .models import OTP, UserProfile
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
 import random
-from .serializers import LoginSerializer
 
+from .serializers import (
+    LoginSerializer,
+    RegisterSerializer,
+    SendOTPSerializer,
+    VerifyOTPSerializer,
+)
+from .models import OTP, UserProfile
+
+
+# ✅ OTP generator
+def _generate_code(n=4):
+    return "".join(str(random.randint(0, 9)) for _ in range(n))
+
+
+# ✅ Email/Password Login
 class LoginView(APIView):
     permission_classes = []
 
@@ -22,24 +35,25 @@ class LoginView(APIView):
         email = serializer.validated_data["email"]
         password = serializer.validated_data["password"]
 
-        # authenticate expects username, so map email to username if needed
+        # authenticate by username=email (since we save username=email)
         user = authenticate(request, username=email, password=password)
-        
         if not user:
-            return Response({"detail": "Invalid email or password"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "Invalid email or password"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
         refresh = RefreshToken.for_user(user)
-        return Response({
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-            "username": user.username,
-        })
+        return Response(
+            {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+                "username": user.username,
+            }
+        )
 
-def _generate_code(n=4):
-    return "".join(str(random.randint(0, 9)) for _ in range(n))
 
-from django.contrib.auth.hashers import make_password
-
+# ✅ Register new user with email & password
 class RegisterView(APIView):
     permission_classes = []
 
@@ -47,33 +61,45 @@ class RegisterView(APIView):
         email = request.data.get("email")
         password = request.data.get("password")
 
+        if not email or not password:
+            return Response(
+                {"detail": "Email and password are required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         if User.objects.filter(email=email).exists():
             return Response(
                 {"detail": "User already exists. Please login."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        # create user
         user = User.objects.create(
-            username=email,   
+            username=email,
             email=email,
-            password=make_password(password)
+            password=make_password(password),
         )
         UserProfile.objects.create(user=user, phone=email)
 
+        # generate OTP
         code = _generate_code(4)
         now = timezone.now()
         OTP.objects.create(
-            identifier=email,
-            code=code,
-            expires_at=now + timedelta(minutes=5)
+            identifier=email, code=code, expires_at=now + timedelta(minutes=5)
         )
 
+        # send OTP to email
         subject = "Your Registration OTP"
         message = f"Your OTP code is {code}. It expires in 5 minutes."
         send_mail(subject, message, "rockyranjith1121@gmail.com", [email])
 
-        return Response({"detail": "OTP sent for registration"}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": "User registered successfully. OTP sent to your email."},
+            status=status.HTTP_201_CREATED,
+        )
 
+
+# ✅ Send OTP for Login
 class SendOTPView(APIView):
     permission_classes = []
 
@@ -81,31 +107,28 @@ class SendOTPView(APIView):
         serializer = SendOTPSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         identifier = serializer.validated_data["identifier"].strip()
-        code = _generate_code(4)
 
-        # Check if user exists
+        # ensure user exists
         if not User.objects.filter(email=identifier).exists():
             return Response(
                 {"detail": "User not registered. Please sign up first."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        code = _generate_code(4)
         now = timezone.now()
         OTP.objects.create(
-            identifier=identifier,
-            code=code,
-            expires_at=now + timedelta(minutes=5)
+            identifier=identifier, code=code, expires_at=now + timedelta(minutes=5)
         )
 
         subject = "Your Login OTP"
         message = f"Your OTP code is {code}. It expires in 5 minutes."
         send_mail(subject, message, "rockyranjith1121@gmail.com", [identifier])
 
-        return Response({"detail": "OTP sent"}, status=status.HTTP_200_OK)
+        return Response({"detail": "OTP sent successfully"}, status=status.HTTP_200_OK)
 
 
-
-
+# ✅ Verify OTP for Login/Register
 class VerifyOTPView(APIView):
     permission_classes = []
 
@@ -115,24 +138,36 @@ class VerifyOTPView(APIView):
         identifier = serializer.validated_data["identifier"].strip()
         code = serializer.validated_data["code"].strip()
 
-        otp = OTP.objects.filter(identifier=identifier, code=code, used=False).order_by("-created_at").first()
+        otp = (
+            OTP.objects.filter(identifier=identifier, code=code, used=False)
+            .order_by("-created_at")
+            .first()
+        )
         if otp is None or not otp.is_valid():
-            return Response({"detail": "Invalid or expired code"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Invalid or expired code"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         otp.used = True
         otp.save()
 
-        # Get or create user
-        profile = UserProfile.objects.filter(phone=identifier).first()
-        if profile:
+        # strictly require user to exist
+        try:
+            profile = UserProfile.objects.get(phone=identifier)
             user = profile.user
-        else:
-            user = User.objects.create(username=identifier, email=identifier if "@" in identifier else "")
-            UserProfile.objects.create(user=user, phone=identifier)
+        except UserProfile.DoesNotExist:
+            return Response(
+                {"detail": "User not found. Please register first."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         refresh = RefreshToken.for_user(user)
-        return Response({
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-            "username": user.username,
-        }, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+                "username": user.username,
+            },
+            status=status.HTTP_200_OK,
+        )
