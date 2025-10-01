@@ -51,7 +51,8 @@ export default function LoginPage() {
   };
 
   const onOtpVerified = (access, username) => {
-    localStorage.setItem("authToken", access);
+    localStorage.setItem("access", access);
+
     toast.success(`Logged in as ${username}`);
     setOtpOpen(false);
 

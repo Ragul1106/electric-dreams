@@ -4,7 +4,7 @@ import { IoCallOutline } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
 import axios from "../api/api";
 import techImg from "../assets/cs2.jpg";
-import CartModal from "../components/Cart"; // ✅ new modal component
+import CartModal from "../components/Cart"; 
 
 export default function ServiceInfoPage() {
   const { id } = useParams();
@@ -18,9 +18,9 @@ export default function ServiceInfoPage() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`api/servicesinfo/${id}/`),
-      axios.get(`api/faqs/`),
-      axios.get(`api/reviews/`)
+      axios.get(`/api/servicesinfo/${id}/`),
+      axios.get(`/api/faqs/`),
+      axios.get(`/api/reviews/`)
     ])
       .then(([svcRes, faqRes, reviewRes]) => {
         setService(svcRes.data);
@@ -36,7 +36,7 @@ export default function ServiceInfoPage() {
 
   // ✅ handle add to cart
   const handleAddToCart = () => {
-    axios.post("api/cart/", { service_id: service.id, quantity: 1 })
+    axios.post("/api/cart/", { service_id: service.id, quantity: 1 })
       .then((res) => {
         setCartItem(res.data); 
       })
@@ -46,7 +46,7 @@ export default function ServiceInfoPage() {
   const handleUpdateQty = (id, newQty) => {
   
   if (newQty < 1) return;
-  axios.put(`api/cart/${id}/`, { quantity: newQty })
+  axios.put(`/api/cart/${id}/`, { quantity: newQty })
     .then((res) => {
       setCartItem(res.data);
     })
@@ -54,10 +54,8 @@ export default function ServiceInfoPage() {
 };
 
 
-  // ✅ close modal
   const handleCloseModal = () => setCartItem(null);
 
-  // ✅ book now
   const handleBookNow = () => {
     alert("Booking placed successfully! 🚀");
     setCartItem(null);
