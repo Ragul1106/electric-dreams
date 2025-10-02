@@ -3,6 +3,7 @@ from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from datetime import timedelta
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -29,7 +30,7 @@ def _is_email(identifier):
 
 # ✅ Email/Password Login
 class LoginView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny] 
 
     def post(self, request):
         email = request.data.get("email")
@@ -60,7 +61,7 @@ class LoginView(APIView):
 
 # ✅ Register new user with email & password
 class RegisterView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny] 
 
     def post(self, request):
         email = request.data.get("email")
@@ -119,7 +120,7 @@ class RegisterView(APIView):
 
 # ✅ Send OTP for Login
 class SendOTPView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny] 
 
     def post(self, request):
         identifier = request.data.get("identifier", "").strip()
@@ -171,7 +172,7 @@ class SendOTPView(APIView):
 
 # ✅ Verify OTP for Login/Register
 class VerifyOTPView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny] 
 
     def post(self, request):
         identifier = request.data.get("identifier", "").strip()
