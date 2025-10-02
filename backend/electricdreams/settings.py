@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',  
     'django.contrib.staticfiles',
-    'elctric','rest_framework', 
+    'elctric',
+    'rest_framework', 
     'rest_framework.authtoken',
     'corsheaders',
     'accounts',
@@ -142,22 +143,24 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ALLOWED_ORIGINS = [
-    "https://electric-dreams-sable.vercel.app",
-    "http://localhost:5173",
+    "https://electric-dreams-sable.vercel.app",   
+    "http://localhost:5173",                     
+    "http://127.0.0.1:5173",                    
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
+CORS_ALLOW_ALL_HEADERS = True
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ]
 
 EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST="smtp.gmail.com"
