@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.conf import settings
 import random
 
 from .serializers import (
@@ -104,7 +105,7 @@ class RegisterView(APIView):
             # send OTP to email
             subject = "Your Registration OTP"
             message = f"Your OTP code is {code}. It expires in 5 minutes."
-            send_mail(subject, message, "rockyranjith1121@gmail.com", [email])
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
 
             return Response(
                 {"detail": "User registered successfully. OTP sent to your email."},
@@ -156,7 +157,7 @@ class SendOTPView(APIView):
             subject = "Your Login OTP"
             message = f"Your OTP code is {code}. It expires in 5 minutes."
             try:
-                send_mail(subject, message, "rockyranjith1121@gmail.com", [identifier])
+                send_mail(subject, message, settings.EMAIL_HOST_USER, [identifier])
             except Exception as e:
                 return Response(
                     {"detail": f"Failed to send OTP: {str(e)}"},
