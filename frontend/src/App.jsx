@@ -10,11 +10,12 @@ import LoginPage from "./components/LoginPage";
 import OTPModal from "./components/OTPModal";
 import ServiceArea from "./pages/ServiceAreas";
 import Footer from "./components/Footer";
+import Emergency from "./pages/Emergency";
 import ServicePage from './pages/ServicesPage';
 import ServiceDetail from "./pages/ServiceDetailPage";
 import ServiceInfoPage from "./pages/ServiceInfoPage";
 import CheckoutPage from "./pages/CheckoutPage";
-import CartModal from "./components/Cart"; // ✅ import CartModal
+import CartModal from "./components/Cart"; 
 
 function App() {
   // 🔹 Global cart state
@@ -59,6 +60,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/otp" element={<OTPModal />} />
+          <Route path="/emergency" element={<Emergency />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/service-area" element={<ServiceArea />} />
           <Route path="/services/:type" element={<ServicePage />} />

@@ -171,4 +171,60 @@ class HomeHeroBanner(models.Model):
     def __str__(self):
         return self.hero_title
 
+class CallbackSection1(models.Model):
+    # Banner image
+    banner = models.ImageField(upload_to="callback/", blank=True, null=True)
 
+    # Left column content
+    title = models.CharField(
+        max_length=255,
+        default="Professional Emergency Electrician - Fast & Reliable",
+    )
+    subtitle = models.TextField(
+        blank=True,
+        default="24-hour Electrician In Electric dreams. Call Our Professional Electricians Now To Get Help Fast",
+    )
+    stars_count = models.PositiveSmallIntegerField(default=5)
+    reviews_text = models.CharField(max_length=255, blank=True, default="Over 215 google reviews")
+
+    # call block image + phone
+    call_image = models.ImageField(upload_to="callback/", blank=True, null=True)
+    phone_number = models.CharField(max_length=80, blank=True, default="(+91)1234567890")
+
+    # Feature cards stored in JSON. Use models.JSONField which works on SQLite (Django >= 3.1)
+    feature_cards = models.JSONField(blank=True, default=list)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "Home Page content"
+
+
+
+class CallbackSection2(models.Model):
+    title = models.CharField(max_length=255, default="Quality Workmanship")
+    paragraphs = models.JSONField(default=list, blank=True)  # list of paragraph strings
+    phone = models.CharField(max_length=80, blank=True, default="+611234567890")
+    image = models.ImageField(upload_to="callback/section2/", blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "Callback Section 2"
+    
+
+
+class CallbackSection3(models.Model):
+    banner_title = models.CharField(
+        max_length=255,
+        default="Get in Touch with Electric Dreams Electrical Today",
+    )
+    phone = models.CharField(max_length=80, blank=True, default="(+91)1234567890")
+    section_title = models.CharField(max_length=255, default="Signs you need an emergency electrician")
+    intro = models.TextField(
+        blank=True,
+        default="Many signs indicate when it’s time to call a 24 hour electrician for help with your electrical problems. Here’s a quick list of what to look for:"
+    )
+    points = models.JSONField(blank=True, default=list)  # list of bullet strings
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "Callback Section 3"

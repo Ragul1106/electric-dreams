@@ -90,3 +90,63 @@ class HomeHeroBannerSerializer(serializers.ModelSerializer):
         model = HomeHeroBanner
         fields = ["id", "bg_img", "hero_img", "hero_title", "hero_subtitle"]
 
+from .models import CallbackSection1
+
+class CallbackSection1Serializer(serializers.ModelSerializer):
+    banner = serializers.SerializerMethodField()
+    call_image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CallbackSection1
+        fields = [
+            "id",
+            "banner",
+            "title",
+            "subtitle",
+            "stars_count",
+            "reviews_text",
+            "call_image",
+            "phone_number",
+            "feature_cards",
+            "updated_at",
+        ]
+
+    def get_banner(self, obj):
+        request = self.context.get("request")
+        if obj.banner:
+            return request.build_absolute_uri(obj.banner.url) if request else obj.banner.url
+        return None
+
+    def get_call_image(self, obj):
+        request = self.context.get("request")
+        if obj.call_image:
+            return request.build_absolute_uri(obj.call_image.url) if request else obj.call_image.url
+        return None
+
+
+from .models import CallbackSection2
+
+class CallbackSection2Serializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CallbackSection2
+        fields = ["id", "title", "paragraphs", "phone", "image", "updated_at"]
+        read_only_fields = ["id", "updated_at"]
+
+    def get_image(self, obj):
+        request = self.context.get("request")
+        if obj.image:
+            try:
+                return request.build_absolute_uri(obj.image.url) if request else obj.image.url
+            except Exception:
+                return obj.image.url
+        return None
+
+from .models import CallbackSection3
+
+class CallbackSection3Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = CallbackSection3
+        fields = ["id", "banner_title", "phone", "section_title", "intro", "points", "updated_at"]
+        read_only_fields = ["id", "updated_at"]

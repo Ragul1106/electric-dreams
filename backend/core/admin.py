@@ -146,4 +146,66 @@ class HomeStatsSectionAdmin(admin.ModelAdmin):
 class HomeHeroBannerAdmin(admin.ModelAdmin):
     list_display = ("hero_title", "created_at")
 
+from django.contrib import admin
+from .models import CallbackSection1
+import json
 
+@admin.register(CallbackSection1)
+class CallbackSection1Admin(admin.ModelAdmin):
+    list_display = ("__str__", "updated_at")
+    readonly_fields = ("updated_at",)
+    fieldsets = (
+        ("Banner", {"fields": ("banner",)}),
+        ("Left content", {"fields": ("title", "subtitle", "stars_count", "reviews_text")}),
+        ("Call block", {"fields": ("call_image", "phone_number")}),
+        (
+            "Feature cards (JSON)",
+            {
+                "description": "Provide a list of 5 card objects: [{'title':'...','subtitle':'...','icon_index':0}, ...]",
+                "fields": ("feature_cards",),
+            },
+        ),
+    )
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        # Make JSONField editable as textarea in admin (optional)
+        formfield = super().formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == "feature_cards":
+            formfield.help_text = "JSON list of feature cards. Example: " + json.dumps(
+                [
+                    {"title": "Lifetime Workmanship Warranty", "subtitle": "", "icon_index": 0},
+                    {"title": "Money Back Guarantee", "subtitle": "", "icon_index": 1},
+                ],
+                ensure_ascii=False,
+            )
+        return formfield
+
+
+from .models import CallbackSection2
+
+@admin.register(CallbackSection2)
+class CallbackSection2Admin(admin.ModelAdmin):
+    list_display = ("title", "phone", "updated_at", "image_thumb")
+    readonly_fields = ("updated_at",)
+    fieldsets = (
+        (None, {"fields": ("title", "paragraphs")}),
+        ("Media / Contact", {"fields": ("image", "phone", "updated_at")}),
+    )
+
+    def image_thumb(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="height:40px; border-radius:4px;" />', obj.image.url)
+        return "-"
+    image_thumb.short_description = "Image"
+    
+from django.contrib import admin
+from .models import CallbackSection3
+
+@admin.register(CallbackSection3)
+class CallbackSection3Admin(admin.ModelAdmin):
+    list_display = ("section_title", "phone", "updated_at")
+    readonly_fields = ("updated_at",)
+    fieldsets = (
+        (None, {"fields": ("banner_title", "section_title", "intro", "points")}),
+        ("Contact", {"fields": ("phone", "updated_at")}),
+    )
