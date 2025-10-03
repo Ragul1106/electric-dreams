@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoCallOutline } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
-import axios from "../api/api"; // ✅ your axios instance
+import axios from "../api/api"; // 
 
 export default function ServiceDetailPage() {
   const navigate = useNavigate();
