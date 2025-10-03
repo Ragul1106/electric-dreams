@@ -91,7 +91,7 @@ export default function CallbackSection2({ onMessageClick }) {
           <img
             src={data.image}
             alt="team"
-            className="w-full h-full object-contain rounded-r-2xl"
+            className="w-full h-full object-cover rounded-r-2xl"
           />
         </div>
       </div>
