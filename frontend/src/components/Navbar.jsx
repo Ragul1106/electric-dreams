@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import logo from "../assets/logo.png";
 import { useCart } from "../context/CartContext";
-import CartModal from "./Cart"; // 
+import CartModal from "./Cart"; // ✅ your CartModal
 
 const servicesColumns = [
   {
@@ -50,7 +50,7 @@ export default function Navbar() {
   const [servicesOpenDesktop, setServicesOpenDesktop] = useState(false);
   const [servicesOpenMobile, setServicesOpenMobile] = useState(false);
 
-  const { cartItems, updateQty } = useCart(); // ✅ using context
+  const { cartItems, updateQty } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
 
   return (
@@ -230,13 +230,30 @@ export default function Navbar() {
         )}
       </div>
 
-      {/* ✅ Cart Modal */}
-      {cartOpen && cartItems.length > 0 && (
-        <CartModal
-          cartItem={cartItems[0]} // since you only allow one item
-          onClose={() => setCartOpen(false)}
-          onUpdateQty={updateQty}
-        />
+      {/* ✅ Cart Modal (show empty or item) */}
+      {cartOpen && (
+        <>
+          {cartItems.length > 0 ? (
+            <CartModal
+              cartItem={cartItems[0]} // single item
+              onClose={() => setCartOpen(false)}
+              onUpdateQty={updateQty}
+            />
+          ) : (
+            <div className="fixed inset-0  bg-opacity-30 flex items-center justify-center z-50">
+              <div className="bg-white rounded-xl shadow-lg w-80 p-5 relative text-center">
+                <button
+                  onClick={() => setCartOpen(false)}
+                  className="absolute top-2 right-3 text-xl"
+                >
+                  ✖
+                </button>
+                <h2 className="text-lg font-bold mb-4">Your Cart</h2>
+                <p className="text-gray-600">Your cart is empty 🛒</p>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </header>
   );

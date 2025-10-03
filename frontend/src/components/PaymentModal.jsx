@@ -1,5 +1,6 @@
 import React from "react";
 import paymentSuccessImg from "../assets/paycom.png";
+
 export default function PaymentModal({ show, onClose }) {
   if (!show) return null;
 
