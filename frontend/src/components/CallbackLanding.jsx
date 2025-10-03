@@ -63,7 +63,7 @@ export default function CallbackLanding() {
       )}
 
       {/* 2. Main row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 px-10 items-start">
         {/* left side (col-span 2 on md) */}
         <div className="md:col-span-2">
           <h2 className="text-2xl md:text-3xl font-semibold mb-3">{title}</h2>

@@ -24,6 +24,7 @@ export default function CallbackSection2({ onMessageClick }) {
         const payload = resp.data && (resp.data || {});
         const result = payload.results ? payload.results[0] : payload;
         if (!cancelled && result) {
+          // normalize paragraphs if string
           if (result.paragraphs && typeof result.paragraphs === "string") {
             try {
               result.paragraphs = JSON.parse(result.paragraphs);
@@ -31,7 +32,9 @@ export default function CallbackSection2({ onMessageClick }) {
           }
           setData((d) => ({ ...d, ...result }));
         }
-      } catch (e) {}
+      } catch (e) {
+        // keep defaults on error
+      }
     }
     load();
     return () => (cancelled = true);
@@ -50,7 +53,7 @@ export default function CallbackSection2({ onMessageClick }) {
     <section className="w-full mt-10">
       <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-stretch">
         {/* Left text block */}
-        <div className="lg:w-2/3 bg-[#2f78bf] text-white rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none p-8 md:p-12 flex flex-col justify-between h-full">
+        <div className="lg:w-2/3 bg-[#2f78bf] text-white rounded-l-2xl p-8 md:p-12 flex flex-col justify-between">
           <div className="h-full">
             <h2 className="text-center text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
               {data.title}
@@ -88,7 +91,7 @@ export default function CallbackSection2({ onMessageClick }) {
           <img
             src={data.image}
             alt="team"
-            className="w-full h-full object-cover rounded-b-2xl lg:rounded-r-2xl lg:rounded-bl-none"
+            className="w-full h-full object-contain rounded-r-2xl"
           />
         </div>
       </div>
