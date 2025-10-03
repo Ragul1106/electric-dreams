@@ -122,72 +122,42 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            {/* Services list */}
-            {/* Services list */}
+            {/* Services grid */}
             <div className="grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 max-w-6xl mx-auto">
-              {section.services.map((svc, idx) => {
-                const isDisabled = idx !== 0; // ✅ only first card active
-
-                return (
-                  <article
-                    key={svc.id}
-                    className={`bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 flex flex-col ${isDisabled
-                        ? "opacity-50 cursor-not-allowed"
-                        : "hover:shadow-lg cursor-pointer transition"
-                      }`}
-                    onClick={() => {
-                      if (!isDisabled) {
-                        navigate(`/services/${section.title.toLowerCase()}/${svc.id}`);
-                      }
-                    }}
-
-                  >
-                    <div className="w-full h-48 bg-gray-100 overflow-hidden">
-                      {svc.image ? (
-                        <img
-                          src={svc.image}
-                          alt={svc.title}
-                          className="w-full h-100 object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          No image
-                        </div>
-                      )}
+              {section.services.map((svc) => (
+                <article
+                  key={svc.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 flex flex-col hover:shadow-lg cursor-pointer transition"
+                  onClick={() => navigate(`/services/${section.title.toLowerCase()}/${svc.id}`)}
+                >
+                  <div className="w-full h-78 bg-gray-100 overflow-hidden">
+                    {svc.image ? (
+                      <img src={svc.image} alt={svc.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">No image</div>
+                    )}
+                  </div>
+                  <div className="bg-[#0056B3] text-white p-4 flex items-center rounded-b-lg">
+                    <div className="w-3/4 pr-3">
+                      <h3 className="font-semibold text-lg leading-tight">{svc.title}</h3>
+                      <p className="text-sm text-white/90 mt-1 leading-snug">{svc.excerpt}</p>
                     </div>
-                    <div className="bg-[#0056B3] text-white p-4 flex items-center rounded-b-lg">
-                      <div className="w-3/4 pr-3">
-                        <h3 className="font-semibold text-lg leading-tight">{svc.title}</h3>
-                        <p className="text-sm text-white/90 mt-1 leading-snug">
-                          {svc.excerpt}
-                        </p>
-                      </div>
-                      <div className="w-1/4 flex justify-end">
-                        <button
-                          disabled={isDisabled}
-                          className={`w-10 h-10 rounded-full flex items-center justify-center shadow ${isDisabled
-                              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                              : "bg-white text-blue-600 hover:scale-95 transition-transform"
-                            }`}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M7.21 4.21a.75.75 0 011.06 0L13.5 9.66a.75.75 0 010 1.06l-5.23 5.45a.75.75 0 11-1.07-1.05L11.69 10 7.21 5.27a.75.75 0 010-1.06z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
+                    <div className="w-1/4 flex justify-end">
+                      <button
+                        className="w-10 h-10 rounded-full bg-white text-blue-600 flex items-center justify-center shadow hover:scale-95 transition-transform"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path
+                            fillRule="evenodd"
+                            d="M7.21 4.21a.75.75 0 011.06 0L13.5 9.66a.75.75 0 010 1.06l-5.23 5.45a.75.75 0 11-1.07-1.05L11.69 10 7.21 5.27a.75.75 0 010-1.06z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
                     </div>
-                  </article>
-                );
-              })}
+                  </div>
+                </article>
+              ))}
             </div>
 
 
